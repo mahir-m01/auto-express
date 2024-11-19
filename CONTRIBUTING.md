@@ -1,39 +1,96 @@
-# Contributing to AutoExpress.Js
+# Contributing to auto-express
 
-First off, thanks for taking the time to contribute!
+Thank you for considering contributing to the **auto-express**! We welcome contributions that help improve this project, including bug fixes, feature requests, documentation updates, and more.
 
-The following is a set of guidelines for contributing to AutoExpress.Js. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+## How to Contribute
 
-## How Can I Contribute?
+### 1. Fork the Repository
+Start by forking the repository to your GitHub account.
 
-### Reporting Bugs
+### 2. Clone Your Fork
+Clone the forked repository to your local machine:
 
-This section guides you through submitting a bug report for AutoExpress.Js. Following these guidelines helps maintainers and the community understand your report, reproduce the behavior, and find related reports.
+```bash
+git clone https://github.com/<your-username>/auto-express.git
+```
 
-Before creating a bug report, please check if the issue has already been reported.
+### 3. Create a Branch
+Create a new branch for your changes:
 
-### Suggesting Enhancements
+```bash
+git checkout -b feature/your-feature-name
+```
 
-This section guides you through submitting an enhancement suggestion for AutoExpress.Js, including completely new features and minor improvements to existing functionality.
+### 4. Make Changes
+Make your changes or additions to the project. Ensure your code follows the project's coding style and standards.
 
-When suggesting an enhancement, please include as much detail as possible.
+### 5. Run Tests
+If applicable, make sure all tests pass and write new tests for your changes:
 
-### Pull Requests
+```bash
+npm run test
+```
 
-The process described here has several goals:
+### 6. Commit Your Changes
+Commit your changes with a clear and concise message:
 
-- Maintain the quality of the codebase
-- Fix bugs or introduce new features efficiently
-- Provide a way for contributions to be discussed before being merged
+```bash
+git commit -m "Add: Description of feature or fix"
+```
 
-When you are ready to create a pull request, please adhere to the following guidelines:
+### 7. Push Your Changes
+Push your branch to your forked repository:
 
-1. **Fork the repo and create your branch from `main`.**
-2. **If you've added code that should be tested, add tests.**
-3. **If you've changed APIs, update the documentation.**
-4. **Ensure the test suite passes.**
-5. **Make sure your code lints.**
+```bash
+git push origin feature/your-feature-name
+```
+
+### 8. Open a Pull Request
+Go to the original repository and open a pull request. Provide a clear title and description of your changes.
+
+---
+
+## Guidelines
+
+### Code Standards
+- Use **TypeScript** for all code contributions.
+- Follow the existing coding style and structure.
+- Document your code wherever applicable.
+
+### Testing
+- Ensure new features are covered with tests.
+- Do not break existing tests.
+
+### Issues
+- Before starting work, check if an issue exists for the change or feature.
+- If not, create an issue to discuss your idea before implementing it.
+
+### Communication
+- Be respectful and constructive when discussing issues or pull requests.
+- Avoid making large changes without prior discussion.
+
+---
+
+## Reporting Bugs
+If you find a bug, please create a new issue and include:
+- A clear and descriptive title.
+- Steps to reproduce the issue.
+- Expected and actual behavior.
+- Any relevant logs or screenshots.
+
+---
+
+## Feature Requests
+Have an idea for a new feature? Open a feature request issue and provide:
+- A detailed explanation of the feature.
+- How it will benefit users.
+- Any potential implementation details.
+
+---
 
 ## Code of Conduct
+This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you agree to abide by its rules.
 
-This project and everyone participating in it is governed by the [AutoExpress.Js Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to arya.pathak@outlook.in
+---
+
+Thank you for helping to improve **auto-express**! 💻✨

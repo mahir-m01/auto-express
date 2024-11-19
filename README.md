@@ -2,24 +2,31 @@
 
 A generator for Express.js projects with database connections, caching, and MVC/API structures.
 
+---
+
 ## Features
 
-- Generate Express.js projects with MVC or API structure.
-- Connect to major databases like MongoDB, PostgreSQL, MySQL, and SQLServer.
-- Optional view engine setup for MVC structure (EJS, Pug, Handlebars).
-- Basic weather model, controller, and API endpoint for demonstration.
+- **Express.js Project Templates**: Generate projects with MVC or API structures.
+- **Database Integration**: Connect to major databases like MongoDB, PostgreSQL, MySQL, and SQLServer.
+- **View Engine Support**: Optional setup for popular view engines (EJS, Pug, Handlebars) for MVC projects.
+- **Demo Included**: Provides a basic weather model, controller, and API endpoint as an example.
+- **Customizable**: Interactive CLI allows you to configure projects according to your requirements.
+
+---
 
 ## Installation
 
-To use this project generator, you can install it globally via npm:
+Install the generator globally to use it as a CLI tool:
 
 ```bash
 npm install -g @arya2004/auto-express
 ```
 
+---
+
 ## Usage
 
-### Start an interactive CLI to configure project:
+### **Start an Interactive CLI**
 
 To initialize a new project with interactive prompts:
 
@@ -27,22 +34,34 @@ To initialize a new project with interactive prompts:
 auto init
 ```
 
-### Generate a new Express API project with MongoDB using AutoExpress:
+### **Generate a New Express API Project**
 
-To create a new API project with a specified name:
+To quickly create a new API project with a specified name:
 
 ```bash
 auto new my-express-api
 ```
 
+This command sets up a new Express.js API project with MongoDB integration and basic scaffolding.
+
+---
+
 ## Contributing
 
-Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md) for guidelines on how to proceed.
+Contributions are welcome! If you'd like to contribute, please check the [Contributing Guide](CONTRIBUTING.md) for guidelines on submitting pull requests, reporting issues, and more.
+
+---
 
 ## Code of Conduct
 
-This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+This project follows a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you agree to maintain a welcoming and respectful environment for all contributors and users.
+
+---
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE.md) file for more details.
+
+---
+
+Happy coding! 🚀
