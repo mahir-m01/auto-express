@@ -44,6 +44,14 @@ auto new my-express-api
 
 This command sets up a new Express.js API project with MongoDB integration and basic scaffolding.
 
+### **Display Help**
+
+To see all available commands and options, use the `--help` flag:
+
+```bash
+auto --help
+```
+
 ---
 
 ## Contributing
