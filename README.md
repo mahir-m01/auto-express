@@ -63,6 +63,34 @@ auto new my-express-api
 
 This command sets up a new Express.js API project with MongoDB integration and basic scaffolding.
 
+### **Using Environment Variables**
+
+Many projects need secrets like database URLs or API keys. You can use a .env file along with dotenv.
+1. Install dotenv in your project:
+   ```bash
+   npm install dotenv
+   ```
+2. Create a .env file in the root of your project:
+   Example -
+   ```bash
+   PORT=5000
+   MONGO_URI=mongodb://localhost:27017/mydb
+   ```
+3. Load variables in your server.js or app.js:
+   ```bash
+   import express from "express";
+   import dotenv from "dotenv";
+    
+   dotenv.config();
+    
+   const app = express();
+   const PORT = process.env.PORT || 3000;
+    
+   app.get("/", (req, res) => {
+      res.send("Hello from Auto Express 🚀");
+   });
+   ```
+
 ### **Display Help**
 
 To see all available commands and options, use the `--help` flag:
