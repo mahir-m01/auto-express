@@ -16,3 +16,7 @@ yarn-debug.log*
 .env
   `.trim();
 }
+
+export function generateReadmeContent(projectName: string) {
+  return `# ${projectName}\n\nWelcome to your new Express project!`;
+}
