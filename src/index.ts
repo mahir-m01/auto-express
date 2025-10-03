@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { Command } from 'commander';
-import { generateGitignoreContent } from './utils';
+import { generateGitignoreContent, generateReadmeContent } from './utils';
 
 export function sayHello() {
   console.log('HEllo');
@@ -30,6 +30,15 @@ function createProject(projectName: string) {
   } catch (error) {
     console.error('❌ Error creating .gitignore file:', error);
   }
+
+  // README.md
+  try {
+    fs.writeFileSync(path.join(projectPath, 'README.md'), generateReadmeContent(projectName));
+    console.log('README.md file created.');
+  } catch (error) {
+    console.error('Error creating README.md file:', error);
+  }
+
   console.log('\n✨ Project setup complete!');
   console.log(`Move into your new project: cd ${projectName}`);
 }
