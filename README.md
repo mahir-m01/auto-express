@@ -63,9 +63,27 @@ auto new my-express-api
 
 This command sets up a new Express.js API project with MongoDB integration and basic scaffolding.
 
+### **Specify Your Package Manager**
+
+You can choose your preferred package manager (npm, yarn, or pnpm) when creating a project:
+
+```bash
+#  npm (default)
+auto new my-express-api
+
+#  yarn
+auto new my-express-api --pm yarn
+
+# = pnpm
+auto new my-express-api --pm pnpm
+```
+
+The CLI will display the correct install and run commands based on your chosen package manager.
+
 ### **Using Environment Variables**
 
 Many projects need secrets like database URLs or API keys. You can use a .env file along with dotenv.
+
 1. Install dotenv in your project:
    ```bash
    npm install dotenv
