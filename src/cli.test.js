@@ -44,6 +44,7 @@ describe('CLI Argument Parsing', () => {
     const output = runCLI(['--h']);
     expect(output).toContain('Usage: auto-express <project-name>');
     expect(output).toContain('Options:');
+    expect(output).toContain('--pm <packageManager>');
     expect(output).toContain('-h, --help');
     expect(output).toContain('-V, --version');
   });
@@ -75,5 +76,12 @@ describe('CLI Argument Parsing', () => {
     expect(output).toContain('Project setup complete!');
     expect(fs.existsSync(projectPath)).toBe(true);
     expect(fs.existsSync(path.join(projectPath, '.gitignore'))).toBe(true);
+  });
+
+  test('should respect --pm flag for package manager', () => {
+    const projectName = uniqueProjectName('test-pm');
+    const output = runCLI([projectName, '--pm', 'yarn'], tmpDir);
+
+    expect(output).toContain('yarn install');
   });
 });
