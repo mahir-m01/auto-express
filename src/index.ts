@@ -10,6 +10,7 @@ import {
   promptProjectType,
   initializePackageManager,
 } from './utils';
+import { getVersion } from './helpers/version';
 
 export function sayHello() {
   console.log('HEllo');
@@ -19,7 +20,7 @@ const program = new Command();
 
 program
   .name('auto-express')
-  .version('1.9.0')
+  .version(getVersion(), "-v, --version", "show version")
   .description('A CLI to generate Express.js projects')
   .option(
     '--pm <packageManager>',
