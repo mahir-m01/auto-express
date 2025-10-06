@@ -2,6 +2,10 @@ import inquirer from 'inquirer';
 import { PackageManager, ProjectType } from './type';
 import { promises as fs } from 'fs';
 import * as path from 'path';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 export async function promptProjectType(
   defaultType: ProjectType = 'api',
@@ -45,6 +49,35 @@ export function generateReadmeContent(projectName: string) {
   return `# ${projectName}\n\nWelcome to your new Express project!`;
 }
 
+export async function initializePackageManager(
+  projectPath: string,
+  packageManager: PackageManager,
+): Promise<void> {
+  console.log(`📦 Installing dependencies with ${packageManager}...`);
+  
+  try {
+    const installCommand = getInstallCommand(packageManager);
+    await execAsync(installCommand, { cwd: projectPath });
+    console.log(`✅ Dependencies installed successfully with ${packageManager}.`);
+  } catch (error) {
+    console.warn(`⚠️  Failed to install dependencies with ${packageManager}:`);
+    console.warn(`   ${error}`);
+    console.warn(`   You can manually install dependencies by running:`);
+    console.warn(`   cd ${path.basename(projectPath)} && ${getInstallCommand(packageManager)}`);
+  }
+}
+
+function getInstallCommand(packageManager: PackageManager): string {
+  switch (packageManager) {
+    case 'yarn':
+      return 'yarn install';
+    case 'pnpm':
+      return 'pnpm install';
+    default:
+      return 'npm install';
+  }
+}
+
 export async function generateExpressProjectMVC(
   projectPath: string,
   packageManager: PackageManager,
@@ -68,22 +101,35 @@ export async function generateExpressProjectMVC(
   const packageJson = {
     name: projectName,
     version: '1.0.0',
+    description: `Express MVC application - ${projectName}`,
     private: true,
     main: 'src/server.js',
     type: 'commonjs',
-    packageManager: packageManager,
     scripts: {
       dev: 'nodemon src/server.js',
       start: 'node src/server.js',
+      test: 'echo "Error: no test specified" && exit 1'
+    },
+    keywords: [
+      'express',
+      'mvc',
+      'nodejs',
+      'web-application'
+    ],
+    author: '',
+    license: 'ISC',
+    engines: {
+      node: '>=14.0.0',
+      npm: '>=6.0.0'
     },
     dependencies: {
       dotenv: '^16.4.5',
       express: '^4.19.2',
-      ejs: '^3.1.10',
+      ejs: '^3.1.10'
     },
     devDependencies: {
-      nodemon: '^3.1.7',
-    },
+      nodemon: '^3.1.7'
+    }
   };
 
   await fs.writeFile(
@@ -210,21 +256,34 @@ export async function generateExpressProjectAPI(
   const packageJson = {
     name: projectName,
     version: '1.0.0',
+    description: `Express API application - ${projectName}`,
     private: true,
     main: 'src/server.js',
     type: 'commonjs',
-    packageManager: packageManager,
     scripts: {
       dev: 'nodemon src/server.js',
       start: 'node src/server.js',
+      test: 'echo "Error: no test specified" && exit 1'
+    },
+    keywords: [
+      'express',
+      'api',
+      'rest',
+      'nodejs'
+    ],
+    author: '',
+    license: 'ISC',
+    engines: {
+      node: '>=14.0.0',
+      npm: '>=6.0.0'
     },
     dependencies: {
       dotenv: '^16.4.5',
-      express: '^4.19.2',
+      express: '^4.19.2'
     },
     devDependencies: {
-      nodemon: '^3.1.7',
-    },
+      nodemon: '^3.1.7'
+    }
   };
 
   await fs.writeFile(
