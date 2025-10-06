@@ -6,8 +6,8 @@ import {
   generateExpressProjectMVC,
   generateGitignoreContent,
   generateReadmeContent,
-  promptProjectType,
 } from './utils';
+import { PackageManager, ProjectType } from './type';
 
 export function sayHello() {
   console.log('HEllo');
