@@ -61,8 +61,9 @@ describe('CLI Argument Parsing', () => {
     const output = runCLI(['--type', 'api', projectName], tmpDir);
 
     expect(output).toContain(
-      `Creating a new Express API project named: ${projectName}`,
+      `Creating a new Express project named: ${projectName}`,
     );
+
     expect(output).toContain('Project setup complete!');
     expect(fs.existsSync(projectPath)).toBe(true);
     expect(fs.existsSync(path.join(projectPath, '.gitignore'))).toBe(true);
@@ -75,8 +76,9 @@ describe('CLI Argument Parsing', () => {
     const output = runCLI(['--type', 'api', 'new', projectName], tmpDir);
 
     expect(output).toContain(
-      `Creating a new Express API project named: ${projectName}`,
+      `Creating a new Express project named: ${projectName}`,
     );
+
     expect(output).toContain('Project setup complete!');
     expect(fs.existsSync(projectPath)).toBe(true);
     expect(fs.existsSync(path.join(projectPath, '.gitignore'))).toBe(true);
@@ -99,8 +101,9 @@ describe('CLI Argument Parsing', () => {
     const output = runCLI(['--type', 'api', projectName], tmpDir);
 
     expect(output).toContain(
-      `Creating a new Express API project named: ${projectName}`,
+      `Creating a new Express project named: ${projectName}`,
     );
+
     expect(output).toContain('Project setup complete!');
     expect(fs.existsSync(projectPath)).toBe(true);
     expect(fs.existsSync(path.join(projectPath, 'package.json'))).toBe(true);
@@ -118,8 +121,9 @@ describe('CLI Argument Parsing', () => {
     const output = runCLI(['--type', 'api', 'new', projectName], tmpDir);
 
     expect(output).toContain(
-      `Creating a new Express API project named: ${projectName}`,
+      `Creating a new Express project named: ${projectName}`,
     );
+
     expect(output).toContain('Project setup complete!');
     expect(fs.existsSync(projectPath)).toBe(true);
     expect(
@@ -136,8 +140,9 @@ describe('CLI Argument Parsing', () => {
     const output = runCLI(['--type', 'mvc', projectName], tmpDir);
 
     expect(output).toContain(
-      `Creating a new Express MVC project named: ${projectName}`,
+      `Creating a new Express project named: ${projectName}`,
     );
+
     expect(
       fs.existsSync(path.join(projectPath, 'src', 'views', 'home.ejs')),
     ).toBe(true);
