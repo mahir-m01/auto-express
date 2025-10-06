@@ -1,9 +1,16 @@
 #!/usr/bin/env node
 
+import { PackageManager, ProjectType } from './type';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Command } from 'commander';
-import { generateGitignoreContent, generateReadmeContent } from './utils';
+import {
+  generateExpressProjectAPI,
+  generateExpressProjectMVC,
+  generateGitignoreContent,
+  generateReadmeContent,
+  promptProjectType,
+} from './utils';
 
 export function sayHello() {
   console.log('HEllo');
@@ -19,19 +26,21 @@ program
     '--pm <packageManager>',
     'specify package manager (npm, yarn, pnpm)',
     'npm',
-  );
-
-type PackageManager = 'npm' | 'yarn' | 'pnpm';
+  )
+  .option('--type <type>', 'specify project type (api, mvc)');
 
 interface ProjectOptions {
   pm: PackageManager;
+  type?: ProjectType;
 }
 
-function createProject(projectName: string, options: ProjectOptions) {
-  console.log(`Creating a new Express project named: ${projectName}`);
+async function createProject(projectName: string, options: ProjectOptions) {
+  console.log(
+    `Creating a new Express ${options.type?.toUpperCase()} project named: ${projectName}`,
+  );
   const projectPath = path.join(process.cwd(), projectName);
-
   const pm = options.pm || 'npm';
+  const type = options.type ?? 'api';
 
   try {
     fs.mkdirSync(projectPath, { recursive: true });
@@ -40,6 +49,8 @@ function createProject(projectName: string, options: ProjectOptions) {
     console.error('❌ Error creating project directory:', error);
     process.exit(1);
   }
+
+  // .gitignore
   try {
     fs.writeFileSync(
       path.join(projectPath, '.gitignore'),
@@ -61,6 +72,18 @@ function createProject(projectName: string, options: ProjectOptions) {
     console.error('Error creating README.md file:', error);
   }
 
+  try {
+    if (type === 'mvc') {
+      await generateExpressProjectMVC(projectPath, pm);
+    } else {
+      await generateExpressProjectAPI(projectPath, pm);
+    }
+    console.log(`✅ ${type.toUpperCase()} scaffold generated.`);
+  } catch (error) {
+    console.error(`❌ Failed to generate ${type} scaffold:`, error);
+    process.exit(1);
+  }
+
   console.log('\n✨ Project setup complete!');
   console.log(`Move into your new project: cd ${projectName}`);
   console.log('\nNext steps:');
@@ -79,18 +102,30 @@ function createProject(projectName: string, options: ProjectOptions) {
 
 program
   .argument('<project-name>', 'The name of the project to create')
-  .action((projectName: string) => {
+  .argument('[type]', 'Project type: api | mvc')
+  .action(async (projectName: string, typeArg?: string) => {
     const options = program.opts<ProjectOptions>();
-    createProject(projectName, options);
+
+    const normalizedArg = (typeArg ?? '').toLowerCase();
+    const inlineType =
+      normalizedArg === 'api' || normalizedArg === 'mvc'
+        ? (normalizedArg as ProjectType)
+        : undefined;
+
+    const projectType =
+      inlineType ?? options.type ?? (await promptProjectType());
+
+    await createProject(projectName, { ...options, type: projectType });
   });
 
 program
   .command('new')
   .description('Quickly create a new Express API project')
   .argument('<project-name>', 'The name of the project to create')
-  .action((projectName: string) => {
+  .action(async (projectName: string) => {
     const options = program.opts<ProjectOptions>();
-    createProject(projectName, options);
+    const projectType = 'api';
+    await createProject(projectName, { ...options, type: projectType });
   });
 
 program
@@ -110,7 +145,8 @@ Usage: auto-express <project-name>
        auto-express init
 
 Options:
-  --pm <packageManager>  Specify package manager (npm, yarn, pnpm) [default: npm]
+  --pm <packageManager>  Specify package manager (npm, yarn, pnpm) [default: npm],
+  --type <project type> Specify project type (mvc, api),
   -h, --help             Display this help message.
   -V, --version          Output the version number.
 `);
