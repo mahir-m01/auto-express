@@ -58,9 +58,11 @@ describe('CLI Argument Parsing', () => {
     const projectName = uniqueProjectName('test-project');
     const projectPath = path.join(tmpDir, projectName);
 
-    const output = runCLI([projectName], tmpDir);
+    const output = runCLI(['--type', 'api', projectName], tmpDir);
 
-    expect(output).toContain(`Creating a new Express project named: ${projectName}`);
+    expect(output).toContain(
+      `Creating a new Express API project named: ${projectName}`,
+    );
     expect(output).toContain('Project setup complete!');
     expect(fs.existsSync(projectPath)).toBe(true);
     expect(fs.existsSync(path.join(projectPath, '.gitignore'))).toBe(true);
@@ -70,9 +72,11 @@ describe('CLI Argument Parsing', () => {
     const projectName = uniqueProjectName('test-new-project');
     const projectPath = path.join(tmpDir, projectName);
 
-    const output = runCLI(['new', projectName], tmpDir);
+    const output = runCLI(['--type', 'api', 'new', projectName], tmpDir);
 
-    expect(output).toContain(`Creating a new Express project named: ${projectName}`);
+    expect(output).toContain(
+      `Creating a new Express API project named: ${projectName}`,
+    );
     expect(output).toContain('Project setup complete!');
     expect(fs.existsSync(projectPath)).toBe(true);
     expect(fs.existsSync(path.join(projectPath, '.gitignore'))).toBe(true);
@@ -80,7 +84,76 @@ describe('CLI Argument Parsing', () => {
 
   test('should respect --pm flag for package manager', () => {
     const projectName = uniqueProjectName('test-pm');
-    const output = runCLI([projectName, '--pm', 'yarn'], tmpDir);
+    const output = runCLI(
+      ['--type', 'api', projectName, '--pm', 'yarn'],
+      tmpDir,
+    );
+
+    expect(output).toContain('yarn install');
+  });
+
+  test('should create an API project with the specified name', () => {
+    const projectName = uniqueProjectName('test-project');
+    const projectPath = path.join(tmpDir, projectName);
+
+    const output = runCLI(['--type', 'api', projectName], tmpDir);
+
+    expect(output).toContain(
+      `Creating a new Express API project named: ${projectName}`,
+    );
+    expect(output).toContain('Project setup complete!');
+    expect(fs.existsSync(projectPath)).toBe(true);
+    expect(fs.existsSync(path.join(projectPath, 'package.json'))).toBe(true);
+    expect(
+      fs.existsSync(
+        path.join(projectPath, 'src', 'routes', 'weather.routes.js'),
+      ),
+    ).toBe(true);
+  });
+
+  test('should create an API project using the "new" command', () => {
+    const projectName = uniqueProjectName('test-new-project');
+    const projectPath = path.join(tmpDir, projectName);
+
+    const output = runCLI(['--type', 'api', 'new', projectName], tmpDir);
+
+    expect(output).toContain(
+      `Creating a new Express API project named: ${projectName}`,
+    );
+    expect(output).toContain('Project setup complete!');
+    expect(fs.existsSync(projectPath)).toBe(true);
+    expect(
+      fs.existsSync(
+        path.join(projectPath, 'src', 'routes', 'weather.routes.js'),
+      ),
+    ).toBe(true);
+  });
+
+  test('should create an MVC project when --type mvc is used', () => {
+    const projectName = uniqueProjectName('test-mvc-project');
+    const projectPath = path.join(tmpDir, projectName);
+
+    const output = runCLI(['--type', 'mvc', projectName], tmpDir);
+
+    expect(output).toContain(
+      `Creating a new Express MVC project named: ${projectName}`,
+    );
+    expect(
+      fs.existsSync(path.join(projectPath, 'src', 'views', 'home.ejs')),
+    ).toBe(true);
+    expect(
+      fs.existsSync(
+        path.join(projectPath, 'src', 'controllers', 'home.controller.js'),
+      ),
+    ).toBe(true);
+  });
+
+  test('should respect --pm flag for package manager', () => {
+    const projectName = uniqueProjectName('test-pm');
+    const output = runCLI(
+      ['--type', 'api', projectName, '--pm', 'yarn'],
+      tmpDir,
+    );
 
     expect(output).toContain('yarn install');
   });
