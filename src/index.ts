@@ -1,7 +1,13 @@
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import { Command } from 'commander';
-import { generateGitignoreContent, generateReadmeContent } from './utils';
+import {
+  generateExpressProjectAPI,
+  generateExpressProjectMVC,
+  generateGitignoreContent,
+  generateReadmeContent,
+  promptProjectType,
+} from './utils';
 
 export function sayHello() {
   console.log('HEllo');
@@ -17,19 +23,19 @@ program
     '--pm <packageManager>',
     'specify package manager (npm, yarn, pnpm)',
     'npm',
-  );
-
-type PackageManager = 'npm' | 'yarn' | 'pnpm';
+  )
+  .option('--type <type>', 'specify project type (api, mvc)');
 
 interface ProjectOptions {
   pm: PackageManager;
+  type?: ProjectType;
 }
 
 async function createProject(projectName: string, options: ProjectOptions) {
   console.log(`Creating a new Express project named: ${projectName}`);
   const projectPath = path.join(process.cwd(), projectName);
-
   const pm = options.pm || 'npm';
+  const type = options.type ?? 'api';
 
   try {
     await fs.mkdir(projectPath, { recursive: true });
@@ -58,6 +64,18 @@ async function createProject(projectName: string, options: ProjectOptions) {
     console.log('✅ README.md file created.');
   } catch (error) {
     console.error('❌ Error creating README.md file:', error);
+    process.exit(1);
+  }
+
+  try {
+    if (type === 'mvc') {
+      await generateExpressProjectMVC(projectPath, pm);
+    } else {
+      await generateExpressProjectAPI(projectPath, pm);
+    }
+    console.log(`✅ ${type.toUpperCase()} scaffold generated.`);
+  } catch (error) {
+    console.error(`❌ Failed to generate ${type} scaffold:`, error);
     process.exit(1);
   }
 
@@ -110,7 +128,8 @@ Usage: auto-express <project-name>
        auto-express init
 
 Options:
-  --pm <packageManager>  Specify package manager (npm, yarn, pnpm) [default: npm]
+  --pm <packageManager>  Specify package manager (npm, yarn, pnpm) [default: npm],
+  --type <project type> Specify project type (mvc, api),
   -h, --help             Display this help message.
   -V, --version          Output the version number.
 `);
