@@ -1,7 +1,4 @@
-#!/usr/bin/env node
-
-import { PackageManager, ProjectType } from './type';
-import * as fs from 'fs';
+import { promises as fs } from 'fs';
 import * as path from 'path';
 import { Command } from 'commander';
 import {
@@ -35,41 +32,39 @@ interface ProjectOptions {
 }
 
 async function createProject(projectName: string, options: ProjectOptions) {
-  console.log(
-    `Creating a new Express ${options.type?.toUpperCase()} project named: ${projectName}`,
-  );
+  console.log(`Creating a new Express project named: ${projectName}`);
   const projectPath = path.join(process.cwd(), projectName);
   const pm = options.pm || 'npm';
   const type = options.type ?? 'api';
 
   try {
-    fs.mkdirSync(projectPath, { recursive: true });
+    await fs.mkdir(projectPath, { recursive: true });
     console.log(`✅ Directory created at: ${projectPath}`);
   } catch (error) {
     console.error('❌ Error creating project directory:', error);
     process.exit(1);
   }
 
-  // .gitignore
   try {
-    fs.writeFileSync(
+    await fs.writeFile(
       path.join(projectPath, '.gitignore'),
       generateGitignoreContent(),
     );
     console.log('✅ .gitignore file created.');
   } catch (error) {
     console.error('❌ Error creating .gitignore file:', error);
+    process.exit(1);
   }
 
-  // README.md
   try {
-    fs.writeFileSync(
+    await fs.writeFile(
       path.join(projectPath, 'README.md'),
       generateReadmeContent(projectName),
     );
-    console.log('README.md file created.');
+    console.log('✅ README.md file created.');
   } catch (error) {
-    console.error('Error creating README.md file:', error);
+    console.error('❌ Error creating README.md file:', error);
+    process.exit(1);
   }
 
   try {
@@ -102,20 +97,9 @@ async function createProject(projectName: string, options: ProjectOptions) {
 
 program
   .argument('<project-name>', 'The name of the project to create')
-  .argument('[type]', 'Project type: api | mvc')
-  .action(async (projectName: string, typeArg?: string) => {
+  .action(async (projectName: string) => {
     const options = program.opts<ProjectOptions>();
-
-    const normalizedArg = (typeArg ?? '').toLowerCase();
-    const inlineType =
-      normalizedArg === 'api' || normalizedArg === 'mvc'
-        ? (normalizedArg as ProjectType)
-        : undefined;
-
-    const projectType =
-      inlineType ?? options.type ?? (await promptProjectType());
-
-    await createProject(projectName, { ...options, type: projectType });
+    await createProject(projectName, options);
   });
 
 program
@@ -124,8 +108,7 @@ program
   .argument('<project-name>', 'The name of the project to create')
   .action(async (projectName: string) => {
     const options = program.opts<ProjectOptions>();
-    const projectType = 'api';
-    await createProject(projectName, { ...options, type: projectType });
+    await createProject(projectName, options);
   });
 
 program
