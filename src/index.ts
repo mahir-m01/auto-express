@@ -1,12 +1,14 @@
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import { Command } from 'commander';
+import { PackageManager, ProjectType } from './type';
 import {
   generateExpressProjectAPI,
   generateExpressProjectMVC,
   generateGitignoreContent,
   generateReadmeContent,
   promptProjectType,
+  initializePackageManager,
 } from './utils';
 
 export function sayHello() {
@@ -24,11 +26,13 @@ program
     'specify package manager (npm, yarn, pnpm)',
     'npm',
   )
-  .option('--type <type>', 'specify project type (api, mvc)');
+  .option('--type <type>', 'specify project type (api, mvc)')
+  .option('--install', 'automatically install dependencies after project creation', false);
 
 interface ProjectOptions {
   pm: PackageManager;
   type?: ProjectType;
+  install?: boolean;
 }
 
 async function createProject(projectName: string, options: ProjectOptions) {
@@ -79,19 +83,39 @@ async function createProject(projectName: string, options: ProjectOptions) {
     process.exit(1);
   }
 
+  // Automatically install dependencies if --install flag is provided
+  if (options.install) {
+    try {
+      await initializePackageManager(projectPath, pm);
+    } catch (error) {
+      console.warn('⚠️  Dependency installation failed, but project was created successfully.');
+    }
+  }
+
   console.log('\n✨ Project setup complete!');
   console.log(`Move into your new project: cd ${projectName}`);
-  console.log('\nNext steps:');
-
-  if (pm === 'yarn') {
-    console.log('  yarn install');
-    console.log('  yarn dev');
-  } else if (pm === 'pnpm') {
-    console.log('  pnpm install');
-    console.log('  pnpm dev');
+  
+  if (!options.install) {
+    console.log('\nNext steps:');
+    if (pm === 'yarn') {
+      console.log('  yarn install');
+      console.log('  yarn dev');
+    } else if (pm === 'pnpm') {
+      console.log('  pnpm install');
+      console.log('  pnpm dev');
+    } else {
+      console.log('  npm install');
+      console.log('  npm run dev');
+    }
   } else {
-    console.log('  npm install');
-    console.log('  npm run dev');
+    console.log('\nTo start development:');
+    if (pm === 'yarn') {
+      console.log('  yarn dev');
+    } else if (pm === 'pnpm') {
+      console.log('  pnpm dev');
+    } else {
+      console.log('  npm run dev');
+    }
   }
 }
 
@@ -128,10 +152,16 @@ Usage: auto-express <project-name>
        auto-express init
 
 Options:
-  --pm <packageManager>  Specify package manager (npm, yarn, pnpm) [default: npm],
-  --type <project type> Specify project type (mvc, api),
-  -h, --help             Display this help message.
-  -V, --version          Output the version number.
+  --pm <packageManager>  Specify package manager (npm, yarn, pnpm) [default: npm]
+  --type <project type>  Specify project type (mvc, api) [default: api]
+  --install              Automatically install dependencies after project creation
+  -h, --help             Display this help message
+  -V, --version          Output the version number
+
+Examples:
+  auto-express my-app                    Create a new API project
+  auto-express my-app --type mvc         Create a new MVC project
+  auto-express my-app --pm yarn --install Create project and install with yarn
 `);
   process.exit(0);
 }
