@@ -11,6 +11,7 @@ import {
   promptProjectType,
   initializePackageManager,
 } from './utils';
+import { getVersion } from './helpers/version';
 
 export function sayHello() {
   console.log('HEllo');

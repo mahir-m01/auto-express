@@ -7,12 +7,13 @@
   "bin": {
     "auto-express": "./dist/index.js"
   },
-  "scripts": {
-    "build": "tsup",
-    "lint": "eslint . --ext .ts",
-    "format": "prettier --write .",
-    "test": "jest"
-  },
+"scripts": {
+  "build": "tsup",
+  "pretest": "npm run build",
+  "lint": "eslint . --ext .ts",
+  "format": "prettier --write .",
+  "test": "jest"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/arya2004/autoexpress.git"
