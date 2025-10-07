@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import { Command } from 'commander';
@@ -16,19 +17,17 @@ export function sayHello() {
   console.log('HEllo');
 }
 
-const program = new Command();
-
-program
-  .name('auto-express')
-  .version(getVersion(), "-v, --version", "show version")
-  .description('A CLI to generate Express.js projects')
-  .option(
-    '--pm <packageManager>',
-    'specify package manager (npm, yarn, pnpm)',
-    'npm',
-  )
-  .option('--type <type>', 'specify project type (api, mvc)')
-  .option('--install', 'automatically install dependencies after project creation', false);
+async function getVersion(): Promise<string> {
+  try {
+    const packageJsonPath = path.join(__dirname, '..', 'package.json');
+    const packageJsonContent = await fs.readFile(packageJsonPath, 'utf-8');
+    const packageJson = JSON.parse(packageJsonContent);
+    return packageJson.version || '0.0.0';
+  } catch (error) {
+    console.log('Failed to get version', error);
+    return '0.0.0';
+  }
+}
 
 interface ProjectOptions {
   pm: PackageManager;
@@ -120,35 +119,58 @@ async function createProject(projectName: string, options: ProjectOptions) {
   }
 }
 
-program
-  .argument('<project-name>', 'The name of the project to create')
-  .action(async (projectName: string) => {
-    const options = program.opts<ProjectOptions>();
-    await createProject(projectName, options);
-  });
+async function main() {
+  const version = await getVersion();
+  
+  const program = new Command();
 
-program
-  .command('new')
-  .alias("default")
-  .description('Quickly create a new Express API project')
-  .argument('<project-name>', 'The name of the project to create')
-  .action(async (projectName: string) => {
-    const options = program.opts<ProjectOptions>();
-    await createProject(projectName, options);
-  });
+  program
+    .name('auto-express')
+    .version(version)
+    .description('A CLI to generate Express.js projects')
+    .option(
+      '--pm <packageManager>',
+      'specify package manager (npm, yarn, pnpm)',
+      'npm',
+    )
+    .option('--type <type>', 'specify project type (api, mvc)')
+    .option('--install', 'automatically install dependencies after project creation', false);
 
-program
-  .command('init')
-  .description('Start an interactive CLI to create a new project (coming soon)')
-  .action(() => {
-    console.log('Interactive init is not implemented yet. Use:');
-    console.log('  auto-express <project-name>');
-    console.log('  auto-express new <project-name>');
-  });
+  program
+    .argument('<project-name>', 'The name of the project to create')
+    .action(async (projectName: string) => {
+      const options = program.opts<ProjectOptions>();
+      await createProject(projectName, options);
+    });
 
-const rawArgs = process.argv.slice(2);
-if (rawArgs.includes('--h')) {
-  console.log(`
+  program
+    .command('new <project-name>')
+    .description('Create a new Express project (alias for default command)')
+    .option(
+      '--pm <packageManager>',
+      'specify package manager (npm, yarn, pnpm)',
+      'npm',
+    )
+    .option('--type <type>', 'specify project type (api, mvc)')
+    .option('--install', 'automatically install dependencies after project creation', false)
+    .action(async (projectName: string, cmdOptions: ProjectOptions) => {
+      const globalOptions = program.opts<ProjectOptions>();
+      const options = { ...globalOptions, ...cmdOptions };
+      await createProject(projectName, options);
+    });
+
+  program
+    .command('init')
+    .description('Start an interactive CLI to create a new project (coming soon)')
+    .action(() => {
+      console.log('Interactive init is not implemented yet. Use:');
+      console.log('  auto-express <project-name>');
+      console.log('  auto-express new <project-name>');
+    });
+
+  const rawArgs = process.argv.slice(2);
+  if (rawArgs.includes('--h')) {
+    console.log(`
 Usage: auto-express <project-name>
        auto-express new <project-name>
        auto-express init
@@ -165,7 +187,13 @@ Examples:
   auto-express my-app --type mvc         Create a new MVC project
   auto-express my-app --pm yarn --install Create project and install with yarn
 `);
-  process.exit(0);
+    process.exit(0);
+  }
+
+  program.parse(process.argv);
 }
 
-program.parse(process.argv);
+main().catch((error) => {
+  console.error('Error initializing CLI:', error);
+  process.exit(1);
+});
