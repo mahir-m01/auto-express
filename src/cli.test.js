@@ -162,4 +162,19 @@ describe('CLI Argument Parsing', () => {
 
     expect(output).toContain('yarn install');
   });
+
+  test('should create a project using the "default" alias (same as new)', () => {
+    const projectName = uniqueProjectName('test-default-project');
+    const projectPath = path.join(tmpDir, projectName);
+
+    const output = runCLI(['default', projectName], tmpDir);
+
+    expect(output).toContain(
+      `Creating a new Express project named: ${projectName}`,
+    );
+    expect(output).toContain('Project setup complete!');
+    expect(fs.existsSync(projectPath)).toBe(true);
+    expect(fs.existsSync(path.join(projectPath, '.gitignore'))).toBe(true);
+});
+
 });
