@@ -129,6 +129,7 @@ program
 
 program
   .command('new')
+  .alias("default")
   .description('Quickly create a new Express API project')
   .argument('<project-name>', 'The name of the project to create')
   .action(async (projectName: string) => {
