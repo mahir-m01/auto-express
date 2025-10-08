@@ -11,7 +11,8 @@ import {
   promptProjectType,
   initializePackageManager,
 } from './utils';
-import { getVersion } from './helpers/version';
+
+// import { getVersion } from './helpers/version';
 
 export function sayHello() {
   console.log('HEllo');
@@ -88,13 +89,15 @@ async function createProject(projectName: string, options: ProjectOptions) {
     try {
       await initializePackageManager(projectPath, pm);
     } catch (error) {
-      console.warn('⚠️  Dependency installation failed, but project was created successfully.');
+      console.warn(
+        '⚠️  Dependency installation failed, but project was created successfully.',
+      );
     }
   }
 
   console.log('\n✨ Project setup complete!');
   console.log(`Move into your new project: cd ${projectName}`);
-  
+
   if (!options.install) {
     console.log('\nNext steps:');
     if (pm === 'yarn') {
@@ -121,7 +124,7 @@ async function createProject(projectName: string, options: ProjectOptions) {
 
 async function main() {
   const version = await getVersion();
-  
+
   const program = new Command();
 
   program
@@ -134,7 +137,11 @@ async function main() {
       'npm',
     )
     .option('--type <type>', 'specify project type (api, mvc)')
-    .option('--install', 'automatically install dependencies after project creation', false);
+    .option(
+      '--install',
+      'automatically install dependencies after project creation',
+      false,
+    );
 
   program
     .argument('<project-name>', 'The name of the project to create')
@@ -152,7 +159,11 @@ async function main() {
       'npm',
     )
     .option('--type <type>', 'specify project type (api, mvc)')
-    .option('--install', 'automatically install dependencies after project creation', false)
+    .option(
+      '--install',
+      'automatically install dependencies after project creation',
+      false,
+    )
     .action(async (projectName: string, cmdOptions: ProjectOptions) => {
       const globalOptions = program.opts<ProjectOptions>();
       const options = { ...globalOptions, ...cmdOptions };
@@ -161,7 +172,9 @@ async function main() {
 
   program
     .command('init')
-    .description('Start an interactive CLI to create a new project (coming soon)')
+    .description(
+      'Start an interactive CLI to create a new project (coming soon)',
+    )
     .action(() => {
       console.log('Interactive init is not implemented yet. Use:');
       console.log('  auto-express <project-name>');
@@ -197,3 +210,4 @@ main().catch((error) => {
   console.error('Error initializing CLI:', error);
   process.exit(1);
 });
+
