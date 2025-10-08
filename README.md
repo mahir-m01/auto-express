@@ -3,14 +3,14 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@arya2004/auto-express">
-    <img src="https://img.shields.io/npm/v/@arya2004/auto-express?style=for-the-badge" alt="NPM Version">
+  <a href="https://www.npmjs.com/package/auto-express">
+    <img src="https://img.shields.io/npm/v/auto-express?style=for-the-badge" alt="NPM Version">
   </a>
-  <a href="https://www.npmjs.com/package/@arya2004/auto-express">
-    <img src="https://img.shields.io/npm/dt/@arya2004/auto-express?style=for-the-badge" alt="NPM Downloads">
+  <a href="https://www.npmjs.com/package/auto-express">
+    <img src="https://img.shields.io/npm/dt/auto-express?style=for-the-badge" alt="NPM Downloads">
   </a>
   <a href="https://github.com/arya2004/auto-express/blob/main/LICENSE">
-    <img src="https://img.shields.io/npm/l/@arya2004/auto-express?style=for-the-badge" alt="License">
+    <img src="https://img.shields.io/npm/l/auto-express?style=for-the-badge" alt="License">
   </a>
   <a href="https://github.com/arya2004/auto-express/issues">
     <img src="https://img.shields.io/github/issues/arya2004/auto-express?style=for-the-badge" alt="GitHub issues">
@@ -38,7 +38,7 @@ A generator for Express.js projects with database connections, caching, and MVC/
 Install the generator globally to use it as a CLI tool:
 
 ```bash
-npm install -g @arya2004/auto-express
+npm install -g auto-express
 ```
 
 ---
@@ -50,7 +50,7 @@ npm install -g @arya2004/auto-express
 To initialize a new project with interactive prompts:
 
 ```bash
-auto init
+auto-express init
 ```
 
 ### **Generate a New Express API Project**
@@ -58,7 +58,7 @@ auto init
 To quickly create a new API project with a specified name:
 
 ```bash
-auto new my-express-api
+auto-express new my-express-api
 ```
 
 This command sets up a new Express.js API project with MongoDB integration and basic scaffolding.
@@ -69,13 +69,13 @@ You can choose your preferred package manager (npm, yarn, or pnpm) when creating
 
 ```bash
 #  npm (default)
-auto new my-express-api
+auto-express new my-express-api
 
 #  yarn
-auto new my-express-api --pm yarn
+auto-express new my-express-api --pm yarn
 
 # = pnpm
-auto new my-express-api --pm pnpm
+auto-express new my-express-api --pm pnpm
 ```
 
 The CLI will display the correct install and run commands based on your chosen package manager.
@@ -95,15 +95,16 @@ Many projects need secrets like database URLs or API keys. You can use a .env fi
    MONGO_URI=mongodb://localhost:27017/mydb
    ```
 3. Load variables in your server.js or app.js:
+
    ```bash
    import express from "express";
    import dotenv from "dotenv";
-    
+
    dotenv.config();
-    
+
    const app = express();
    const PORT = process.env.PORT || 3000;
-    
+
    app.get("/", (req, res) => {
       res.send("Hello from Auto Express 🚀");
    });
@@ -114,7 +115,7 @@ Many projects need secrets like database URLs or API keys. You can use a .env fi
 To see all available commands and options, use the `--help` flag:
 
 ```bash
-auto --help
+auto-express --help
 ```
 
 ---
