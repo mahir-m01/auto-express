@@ -8,7 +8,7 @@ import {
   generateExpressProjectMVC,
   generateGitignoreContent,
   generateReadmeContent,
-  promptProjectType,
+  // promptProjectType,
   initializePackageManager,
 } from './utils';
 
@@ -88,7 +88,7 @@ async function createProject(projectName: string, options: ProjectOptions) {
   if (options.install) {
     try {
       await initializePackageManager(projectPath, pm);
-    } catch (error) {
+    } catch {
       console.warn(
         '⚠️  Dependency installation failed, but project was created successfully.',
       );

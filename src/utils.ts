@@ -67,8 +67,8 @@ export async function initializePackageManager(
   }
 }
 
-function getInstallCommand(packageManager: PackageManager): string {
-  switch (packageManager) {
+function getInstallCommand(_packageManager: PackageManager): string {
+  switch (_packageManager) {
     case 'yarn':
       return 'yarn install';
     case 'pnpm':
@@ -80,7 +80,7 @@ function getInstallCommand(packageManager: PackageManager): string {
 
 export async function generateExpressProjectMVC(
   projectPath: string,
-  packageManager: PackageManager,
+  _packageManager: PackageManager,
 ) {
   const projectName = path.basename(projectPath);
   const directories = [
@@ -242,7 +242,7 @@ module.exports = {};
 
 export async function generateExpressProjectAPI(
   projectPath: string,
-  packageManager: PackageManager,
+  _packageManager: PackageManager,
 ) {
   const projectName = path.basename(projectPath);
   const directories = ['src', 'src/routes', 'src/models', 'src/middleware'];
