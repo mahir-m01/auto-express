@@ -13,7 +13,16 @@ export default [
       sourceType: 'commonjs',
       globals: globals.node,
     },
-    rules: { '@typescript-eslint/no-require-imports': 'off' },
+    rules: { 
+      '@typescript-eslint/no-require-imports': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          'argsIgnorePattern': '^_', // Ignore function arguments that start with '_'
+          'varsIgnorePattern': '^_', // Ignore local variables that start with '_'
+        },
+      ],
+    },
   },
   {
     files: ['**/*.test.{js,ts}'],
