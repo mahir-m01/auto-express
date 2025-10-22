@@ -1,3 +1,4 @@
+p align="center"> <a href="https://www.npmjs.com/package/auto-express"> <img src="https://img.shields.io/npm/v/auto-express?style=for-the-badge" alt="NPM Version"> </a> <a href="https://www.npmjs.com/package/auto-express"> <img src="https://img.shields.io/npm/dt/auto-express?style=for-the-badge" alt="NPM Downloads"> </a> <a href="https://github.com/arya2004/auto-express/blob/main/LICENSE"> <img src="https://img.shields.io/npm/l/auto-express?style=for-the-badge" alt="License"> </a> <a href="https://github.com/arya2004/auto-express/issues"> <img src="https://img.shields.io/github/issues/arya2004/auto-express?style=for-the-badge" alt="GitHub issues"> </a> </p>
 <p align="center">
   
 </p>
