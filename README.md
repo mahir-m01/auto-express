@@ -1,31 +1,33 @@
-# Express Project Generator — Auto Express
+<div align="center">
 
-<div style="text-align:center">
-  <a href="https://www.npmjs.com/package/auto-express">
-    <img src="https://img.shields.io/npm/v/auto-express?style=for-the-badge" alt="NPM Version">
-  </a>
-  <a href="https://www.npmjs.com/package/auto-express">
-    <img src="https://img.shields.io/npm/dt/auto-express?style=for-the-badge" alt="NPM Downloads">
-  </a>
-  <a href="https://github.com/arya2004/auto-express/blob/main/LICENSE">
-    <img src="https://img.shields.io/npm/l/auto-express?style=for-the-badge" alt="License">
-  </a>
-  <a href="https://github.com/arya2004/auto-express/issues">
-    <img src="https://img.shields.io/github/issues/arya2004/auto-express?style=for-the-badge" alt="GitHub issues">
-  </a>
+# Express Project Generator
+
+<a href="https://www.npmjs.com/package/auto-express">
+  <img src="https://img.shields.io/npm/v/auto-express?style=for-the-badge" alt="NPM Version">
+</a>
+<a href="https://www.npmjs.com/package/auto-express">
+  <img src="https://img.shields.io/npm/dt/auto-express?style=for-the-badge" alt="NPM Downloads">
+</a>
+<a href="https://github.com/arya2004/auto-express/blob/main/LICENSE">
+  <img src="https://img.shields.io/npm/l/auto-express?style=for-the-badge" alt="License">
+</a>
+<a href="https://github.com/arya2004/auto-express/issues">
+  <img src="https://img.shields.io/github/issues/arya2004/auto-express?style=for-the-badge" alt="GitHub issues">
+</a>
+
 </div>
 
-A lightweight generator/CLI for bootstrapping Express.js projects with options for API or MVC structure, database integration, and optional view engines.
+A generator for Express.js projects with database connections, caching, and MVC/API structures.
 
 ---
 
 ## Features
 
-- Create Express.js projects with either MVC or API layouts
-- Database integration templates for MongoDB, PostgreSQL, MySQL, and SQL Server
-- Optional view engine scaffolding (EJS, Pug, Handlebars)
-- Example demo (weather model + controller + API endpoint)
-- Interactive CLI to customize generated projects
+- **Express.js Project Templates**: Generate projects with MVC or API structures.
+- **Database Integration**: Connect to major databases like MongoDB, PostgreSQL, MySQL, and SQLServer.
+- **View Engine Support**: Optional setup for popular view engines (EJS, Pug, Handlebars) for MVC projects.
+- **Demo Included**: Provides a basic weather model, controller, and API endpoint as an example.
+- **Customizable**: Interactive CLI allows you to configure projects according to your requirements.
 
 ---
 
@@ -41,66 +43,90 @@ npm install -g auto-express
 
 ## Usage
 
-- Start the interactive CLI:
+### **Start an Interactive CLI**
+
+To initialize a new project with interactive prompts:
 
 ```bash
 auto-express init
 ```
 
-- Quickly generate a new API project:
+### **Generate a New Express API Project**
+
+To quickly create a new API project with a specified name:
 
 ```bash
 auto-express new my-express-api
 ```
 
-- Choose package manager (npm default, or pass `--pm yarn` / `--pm pnpm`):
+This command sets up a new Express.js API project with MongoDB integration and basic scaffolding.
+
+### **Specify Your Package Manager**
+
+You can choose your preferred package manager (npm, yarn, or pnpm) when creating a project:
 
 ```bash
+#  npm (default)
+auto-express new my-express-api
+
+#  yarn
 auto-express new my-express-api --pm yarn
+
+# = pnpm
+auto-express new my-express-api --pm pnpm
 ```
 
-The CLI will show the correct install and start commands for the chosen package manager.
+The CLI will display the correct install and run commands based on your chosen package manager.
 
----
+### **Using Environment Variables**
 
-## Environment variables
+Many projects need secrets like database URLs or API keys. You can use a .env file along with dotenv.
 
-Use a `.env` file and `dotenv` to store secrets like DB URLs and API keys.
+1. Install dotenv in your project:
+   ```bash
+   npm install dotenv
+   ```
+2. Create a .env file in the root of your project:
+   Example -
+   ```bash
+   PORT=5000
+   MONGO_URI=mongodb://localhost:27017/mydb
+   ```
+3. Load variables in your server.js or app.js:
 
-Example `.env`:
+   ```bash
+   import express from "express";
+   import dotenv from "dotenv";
 
-```
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/mydb
-```
+   dotenv.config();
 
-Load variables in your `server.js` / `app.js`:
+   const app = express();
+   const PORT = process.env.PORT || 3000;
 
-```js
-import express from 'express'
-import dotenv from 'dotenv'
+   app.get("/", (req, res) => {
+      res.send("Hello from Auto Express 🚀");
+   });
+   ```
 
-dotenv.config()
+### **Display Help**
 
-const app = express()
-const PORT = process.env.PORT || 3000
+To see all available commands and options, use the `--help` flag:
 
-app.get('/', (req, res) => res.send('Hello from Auto Express 🚀'))
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+```bash
+auto-express --help
 ```
 
 ---
 
 ## Contributing
 
-Contributions welcome — see `CONTRIBUTING.md` for guidelines on pull requests, issues, and coding standards.
+Contributions are welcome! If you'd like to contribute, please check the [Contributing Guide](CONTRIBUTING.md) for guidelines on submitting pull requests, reporting issues, and more.
 
 ---
 
 ## Code of Conduct
 
-This project follows the `CODE_OF_CONDUCT.md` — please be respectful and welcoming.
+This project follows a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you agree to maintain a welcoming and respectful environment for all contributors and users.
 
 ---
 
